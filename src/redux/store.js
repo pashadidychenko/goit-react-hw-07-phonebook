@@ -1,16 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit";
-// import { createStore, combineReducers } from "redux";
-// import { composeWithDevTools } from "redux-devtools-extension";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import contactsReducer from "./contacts/contactsReducer";
 import statusReducer from "./status/statusReducer";
+// import logger from "redux-logger";
 
 const store = configureStore({
   reducer: {
     contacts: contactsReducer,
     status: statusReducer,
   },
+  middleware: [...getDefaultMiddleware()],
 });
-
-// const store = createStore(contactsReducer, composeWithDevTools());
 
 export default store;

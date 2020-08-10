@@ -1,11 +1,15 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import styles from "./AddContact.module.css";
 import Alert from "../../Alet/Alert";
 import { CSSTransition } from "react-transition-group";
 import alertTransition from "../../Contacts/transitions/alert.module.css";
+import { getContactsItems } from "../../../redux/contacts/contactsSelectors";
+import { getStatusExist } from "../../../redux/status/statusSelectors";
+import { connect } from "react-redux";
+import { addNewItem } from "../../../redux/contacts/contactsOperations";
+import { statusExist } from "../../../redux/status/statusActions";
 
-export class AddContact extends React.Component {
+class AddContact extends React.Component {
   state = {
     name: "",
     number: "",
@@ -19,15 +23,14 @@ export class AddContact extends React.Component {
   };
 
   handleSubmit = (el) => {
-    const { statusExist, addNewItem } = this.props.props;
+    const { statusExist, addNewItem } = this.props;
     el.preventDefault();
     const contact = {
-      id: uuidv4(),
       name: this.state.name.replace(/\b\w/g, (l) => l.toUpperCase()),
       number: this.state.number,
     };
     if (
-      this.props.props.items.find(
+      this.props.items.find(
         (element) => element.name.toLowerCase() === contact.name.toLowerCase()
       )
     ) {
@@ -46,7 +49,7 @@ export class AddContact extends React.Component {
 
   render() {
     const { name, number } = this.state;
-    const { exist } = this.props.props;
+    const { exist } = this.props;
     return (
       <form className={styles.contactForm} onSubmit={this.handleSubmit}>
         <label htmlFor="contactName">Ім'я</label>
@@ -84,3 +87,17 @@ export class AddContact extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    items: getContactsItems(state),
+    exist: getStatusExist(state),
+  };
+};
+
+const mapDispatchToProps = {
+  addNewItem,
+  statusExist,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddContact);

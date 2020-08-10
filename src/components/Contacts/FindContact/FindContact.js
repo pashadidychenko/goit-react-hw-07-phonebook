@@ -1,8 +1,9 @@
 import React from "react";
 import styles from "./FindContact.module.css";
+import { getFilterValue } from "../../../redux/contacts/contactsActions";
+import { connect } from "react-redux";
 
-const FindContact = ({ props }) => {
-  const { getFilterValue } = props;
+const FindContact = ({ getFilterValue }) => {
   return (
     <div className={styles.findContainet}>
       <label htmlFor="findContact">Введіть ім'я для пошуку</label>
@@ -11,4 +12,10 @@ const FindContact = ({ props }) => {
   );
 };
 
-export default FindContact;
+const mapStateToProps = (state) => state;
+
+const mapDispatchToProps = {
+  getFilterValue,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FindContact);

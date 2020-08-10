@@ -1,12 +1,17 @@
 import { createAction } from "@reduxjs/toolkit";
 
-const addNewItem = createAction("ADD_NEW_ITEM");
-const deleteItem = createAction("DELETE_ITEM", function prepare(e) {
-  const id = e.target.id;
-  return {
-    payload: id,
-  };
-});
+const addContactsRequest = createAction("contacts/addRequest");
+const addContactsSuccess = createAction("contacts/addSuccess");
+const addContactsError = createAction("contacts/addError");
+
+const getContactsRequest = createAction("contacts/getRequest");
+const getContactsSuccess = createAction("contacts/getSuccess");
+const getContactsError = createAction("contacts/getError");
+
+const removeContactsRequest = createAction("contacts/removeRequest");
+const removeContactsSuccess = createAction("contacts/removeSuccess");
+const removeContactsError = createAction("contacts/removeError");
+
 const getFilterValue = createAction("FILTER_ITEM", function prepare(e) {
   const string = e.target.value;
   return {
@@ -14,27 +19,15 @@ const getFilterValue = createAction("FILTER_ITEM", function prepare(e) {
   };
 });
 
-// const addNewItem = (item) => {
-//   return {
-//     type: "ADD_NEW_ITEM",
-//     payload: item,
-//   };
-// };
-
-// const deleteItem = (e) => {
-//   const id = e.target.id;
-//   return {
-//     type: "DELETE_ITEM",
-//     payload: id,
-//   };
-// };
-
-// const getFilterValue = (e) => {
-//   const string = e.target.value;
-//   return {
-//     type: "FILTER_ITEM",
-//     payload: string,
-//   };
-// };
-
-export { addNewItem, deleteItem, getFilterValue };
+export {
+  addContactsRequest,
+  addContactsSuccess,
+  addContactsError,
+  getContactsRequest,
+  getContactsSuccess,
+  getContactsError,
+  removeContactsRequest,
+  removeContactsSuccess,
+  removeContactsError,
+  getFilterValue,
+};

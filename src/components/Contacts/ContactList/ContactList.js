@@ -3,6 +3,12 @@ import ContactListItem from "../ContactListItem/ContactListItem";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import styles from "./ContactList.module.css";
 import slideTransition from "../transitions/slide.module.css";
+import {
+  getContactsItems,
+  getContactsFilter,
+} from "../../../redux/contacts/contactsSelectors";
+import { removeItem } from "../../../redux/contacts/contactsOperations";
+import { connect } from "react-redux";
 
 function filteredContact(items, filter) {
   if (filter.length !== 0) {
@@ -14,8 +20,7 @@ function filteredContact(items, filter) {
   }
 }
 
-const ContactList = ({ props }) => {
-  const { items = [], filter = "", deleteItem } = props;
+const ContactList = ({ items, filter = "", removeItem }) => {
   const contacts = filteredContact(items, filter);
   return (
     <TransitionGroup component="ul" className={styles.contactList}>
@@ -26,9 +31,9 @@ const ContactList = ({ props }) => {
           classNames={slideTransition}
         >
           <ContactListItem
-            deleteItem={deleteItem}
+            removeItem={removeItem}
             contact={contact}
-            key={contact.id}
+            key={items.id}
           />
         </CSSTransition>
       ))}
@@ -36,4 +41,15 @@ const ContactList = ({ props }) => {
   );
 };
 
-export default ContactList;
+const mapStateToProps = (state) => {
+  return {
+    items: getContactsItems(state),
+    filter: getContactsFilter(state),
+  };
+};
+
+const mapDispatchToProps = {
+  removeItem,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
